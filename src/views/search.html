@@ -1,0 +1,66 @@
+<!DOCTYPE hmtl>
+<html>
+	<head>
+		<script src="../../build/react.js"></script>
+		<script src="../../build/react-dom.js"></script>
+		<script src="https://fb.me/JSXTransformer-0.13.3.js"></script>
+	</head>
+	<body>
+		<div id="search-list"></div>
+		<script type="text/jsx">
+			var List = React.createClass({
+			render : function() {
+				return (
+					<ul>
+						{
+							this.props.items.map(function(item) {
+								return <li key={item}>{item}</li>
+							})
+						}
+					</ul>
+				);
+			}
+		});
+
+		var FilteredList = React.createClass({
+			searchItems : function(event) {
+				var updatedList = this.state.initialItems;
+				updatedList = updatedList.filter(function(item) {
+					return item.toLowerCase().search(
+						event.target.value.toLowerCase()) !== -1;
+				});
+				this.setState({items : updatedList});
+			},
+			getInitialState : function() {
+				return {
+					initialItems : [
+						'Harley',
+						'Royal Enfiled',
+						'Triumph',
+						'KTM',
+						'Kawasaki',
+						'Ducati',
+						'Honda',
+						'Yamaha'
+					],
+					items : []
+				};
+			},
+			componentWillMount : function() {
+				this.setState({items : this.state.initialItems});
+			},
+			render : function() {
+				return (
+					<div>
+						<input type="text" placeholder="search" onChange={this.searchItems}/>
+						<List items={this.state.items}></List>
+					</div>
+				);
+			}
+		});
+
+		ReactDOM.render(<FilteredList/>, document.getElementById('search-list'));
+
+		</script>
+	</body>
+</html>
